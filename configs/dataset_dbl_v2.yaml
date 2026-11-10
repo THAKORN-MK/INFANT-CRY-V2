@@ -1,0 +1,36 @@
+# `model_generation` is this workspace/model iteration; it is not the source Dataset release.
+model_generation: v2
+dataset_version: "1.0"
+doi: 10.17632/x493z8nmwc.1
+dataset_root: data/raw/infantcry_dbl_v2
+metadata_filename: metadata_project.csv
+exclusions_file: data/curation/infantcry_dbl_v2_exclusions.csv
+class_order:
+  - eairh
+  - eh
+  - heh
+  - neh
+  - owh
+tiers:
+  - Dunstan-Core
+  - InfantCry-1214
+# This copied release has a verified class-folder layout; metadata labels are
+# used and cross-checked against the parent class folder below.
+label_source: metadata_column
+tier_source: metadata_column
+label_path_parent_levels: 1
+tier_path_parent_levels: 2
+# Verified against the dataset folders: metadata `class` agrees with the class folder.
+cross_check_parent_label: true
+# Subject/session identity is not presumed from a column name alone.
+grouping_identity_verified: false
+# Column names verified from the copied metadata_project.csv header.
+columns:
+  filepath: relative_path
+  label: class
+  tier: tier_name
+  clip_id: clip_id
+  infant_id: null
+  session_id: null
+  family_id: null
+  source_group: null

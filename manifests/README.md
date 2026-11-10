@@ -1,0 +1,7 @@
+# Generated manifests
+
+Dataset audits and frozen splits are generated here after the user supplies the dataset. These files may contain local paths and dataset fingerprints, so they are ignored by Git by default. Preserve the run-specific manifest and hashes alongside results used for a report.
+
+The dataset curation ledger is maintained separately at `../data/curation/infantcry_dbl_v2_exclusions.csv`. It excludes six records from analysis because three exact-content families have conflicting labels; it does not delete or edit source audio or metadata. Each audit records the ledger hash and writes `excluded_records.csv` beside `dataset_audit.json` and `records.csv`.
+
+In this workspace, `model_generation: v2` is an internal project/model label; it is not the Dataset release. The local source is Mendeley V1 (`dataset_version: 1.0`, DOI `10.17632/x493z8nmwc.1`). The corrected audit is in `model_v2_dataset_v1/` (1,551 source records, 1,545 included, six excluded by the documented ledger). Its locked split is in `splits/model_v2_dataset_v1/seed-42-a241c8eba2da/`. The older `curated_v1/` audit used a misconfigured version field and must not be used for splitting/training; retain it as historical evidence. Qiu-informed Stage 2 Validation results are summarized in `../reports/report_hub.md`; model weights, run manifests and per-sample predictions remain local and are not published in this repository.

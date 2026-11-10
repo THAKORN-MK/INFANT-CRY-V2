@@ -1,0 +1,88 @@
+class_order: [eairh, eh, heh, neh, owh]
+primary_tier: InfantCry-1214
+
+# Paper-informed feature profiles. The MFCC-only 42 x 24 profile is a local
+# comparison condition; the MMT tensor geometry remains the project's frozen
+# interpretation of the paper's concatenation description.
+feature_sets:
+  mfcc_paper:
+    feature_set: mfcc_paper
+    sample_rate: 16000
+    sample_rate_status: locked
+    dataset_reference_recommended_sample_rate: 16000
+    mono: true
+    trim_top_db: 20
+    normalize_waveform: true
+    n_mfcc: 42
+    n_mels: 42
+    n_fft: 2048
+    hop_length: 512
+    mfcc_frames: 24
+  mmt:
+    feature_set: mmt
+    sample_rate: 16000
+    sample_rate_status: locked
+    dataset_reference_recommended_sample_rate: 16000
+    mono: true
+    trim_top_db: 20
+    normalize_waveform: true
+    n_mfcc: 42
+    n_mels: 42
+    n_fft: 2048
+    hop_length: 512
+    mmt_frames: 24
+    mmt_component_order: [mfcc_time_doubled, tonnetz_then_mel_time_concat]
+
+# These four candidates form a dedicated comparison set; they do not replace
+# or mutate configs/models_stage2.yaml or its existing runs.
+models:
+  - id: qiu_mfcc_reslstm
+    architecture: qiu_mfcc_reslstm
+    enabled: true
+    feature_set: mfcc_paper
+    input_shape: [42, 24, 1]
+    device: gpu
+    mixed_precision: true
+    stem_filters: 32
+    residual_filters: [64, 128, 256, 512]
+    lstm_units: [256, 128, 64]
+    dropout: 0.3
+  - id: qiu_mmt_resnet
+    architecture: qiu_mmt_resnet
+    enabled: true
+    feature_set: mmt
+    input_shape: [84, 48, 1]
+    device: gpu
+    mixed_precision: true
+    stem_filters: 32
+    residual_filters: [64, 128, 256, 512]
+    dropout: 0.3
+  - id: qiu_mmt_lstm
+    architecture: qiu_mmt_lstm
+    enabled: true
+    feature_set: mmt
+    input_shape: [84, 48, 1]
+    device: gpu
+    mixed_precision: true
+    lstm_units: [256, 128, 64]
+  - id: qiu_mmt_reslstm
+    architecture: qiu_mmt_reslstm
+    enabled: true
+    feature_set: mmt
+    input_shape: [84, 48, 1]
+    device: gpu
+    mixed_precision: true
+    stem_filters: 32
+    residual_filters: [64, 128, 256, 512]
+    lstm_units: [256, 128, 64]
+    dropout: 0.3
+
+# Hold the previously frozen project schedule constant across conditions.
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  early_stopping_patience: 8
+  deterministic_ops: true
+  optimizer: Adam
+  selection_metric: validation_macro_f1

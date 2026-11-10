@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "infantcry-research"
+version = "0.1.0"
+description = "Reproducible Stage 2 research experiments for InfantCry-DBL"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+  "numpy>=1.26,<2.3",
+  "librosa>=0.10,<0.12",
+  "scikit-learn>=1.4,<1.8",
+  "pandas>=2.0,<3",
+  "soundfile>=0.12,<1",
+  "PyYAML>=6,<7",
+  "matplotlib>=3.8,<3.11",
+  "tensorflow>=2.15,<3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.8,<1"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

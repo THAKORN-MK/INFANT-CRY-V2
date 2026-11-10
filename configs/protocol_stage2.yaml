@@ -1,0 +1,23 @@
+schema_version: "1.0"
+model_generation: v2
+dataset_version: "1.0"
+dataset_doi: 10.17632/x493z8nmwc.1
+primary_tier: InfantCry-1214
+fractions:
+  train: 0.70
+  validation: 0.15
+  test: 0.15
+seeds: [42, 123, 2026]
+group_preference: [infant_id, session_id, family_id, source_group, clip_id]
+exact_content_hash_guard: true
+locked_test: true
+test_selection_allowed: false
+cross_tier_transfer:
+  enabled: false
+  direction: Dunstan-Core_to_InfantCry-1214
+  report_separately: true
+  note: Keep cross-tier transfer separate from primary-tier model selection and locked-test metrics.
+uncertainty:
+  method: group_bootstrap_when_independent_grouping_is_verified
+  confidence_level: 0.95
+  resamples: 2000

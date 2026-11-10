@@ -1,0 +1,4 @@
+# Placeholder only; this is not an installable or verified dependency lock.
+# Runtime dependencies and supported Python version are documented in pyproject.toml.
+# Replace this file with a generated, tested lock before claiming environment-level
+# reproducibility for a published experiment.

@@ -1,0 +1,89 @@
+class_order: [eairh, eh, heh, neh, owh]
+primary_tier: InfantCry-1214
+feature_sets:
+  stage2_hybrid:
+    feature_set: stage2_hybrid
+    sample_rate: 16000
+    sample_rate_status: locked
+    dataset_reference_recommended_sample_rate: 16000
+    mono: true
+    trim_top_db: 20
+    normalize_waveform: true
+    n_mfcc: 40
+    n_mels: 64
+    n_chroma: 12
+    n_fft: 2048
+    hop_length: 512
+    delta_width: 9
+    max_frames: 128
+    feature_order: [mfcc, delta, delta2, logmel, chroma]
+  mmt:
+    feature_set: mmt
+    sample_rate: 16000
+    sample_rate_status: locked
+    dataset_reference_recommended_sample_rate: 16000
+    mono: true
+    trim_top_db: 20
+    normalize_waveform: true
+    n_mfcc: 42
+    n_mels: 42
+    n_fft: 2048
+    hop_length: 512
+    mmt_frames: 24
+    mmt_component_order: [mfcc_time_doubled, tonnetz_then_mel_time_concat]
+models:
+  - id: majority
+    enabled: true
+    feature_set: stage2_hybrid
+    device: cpu
+    mixed_precision: false
+    input: labels_only
+  - id: mfcc_svm
+    enabled: true
+    feature_set: stage2_hybrid
+    device: cpu
+    mixed_precision: false
+    n_mfcc: 40
+    pooling: per_clip_mean_std
+    kernel: rbf
+    class_weight: balanced
+  - id: logmel_cnn
+    enabled: true
+    feature_set: stage2_hybrid
+    device: gpu
+    mixed_precision: true
+    input_shape: [64, 128, 1]
+    cnn_filters: [16, 32, 64]
+    dense_units: [64]
+    dropout: 0.25
+  - id: cnn_bilstm_attention
+    enabled: true
+    feature_set: stage2_hybrid
+    device: gpu
+    mixed_precision: true
+    cnn_filters: [32, 64, 128, 256]
+    bilstm_units: [128, 64]
+    attention_units: 64
+    dense_units: [256, 128, 64]
+    dropout: 0.25
+  - id: mmt_reslstm
+    enabled: true
+    feature_set: mmt
+    device: gpu
+    mixed_precision: true
+    input_shape: [84, 48, 1]
+    stem_filters: 32
+    residual_filters: [64, 128, 256, 512]
+    lstm_units: [256, 128, 64]
+    dropout: 0.3
+  - id: sinc_mamba_kan
+    enabled: false
+    note: Enable only after verifying the full article method and input protocol.
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  early_stopping_patience: 8
+  deterministic_ops: true
+  optimizer: Adam
+  selection_metric: validation_macro_f1

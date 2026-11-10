@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# User-managed data and derived caches
+data/raw/**
+!data/raw/README.md
+data/processed/**
+!data/processed/README.md
+data/curation/**
+.cache/
+feature_cache/
+
+# Generated experiment evidence and model files
+runs/**
+!runs/README.md
+manifests/**
+!manifests/README.md
+reports/stage2/**
+*.keras
+*.h5
+*.weights.h5
+
+# Internal planning and local scratch files
+.superpowers/
+docs/superpowers/
+tmp/
+
+# Research papers are referenced by citation, not redistributed
+research/*.pdf
+
+# Local environment/editor files
+.env
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
